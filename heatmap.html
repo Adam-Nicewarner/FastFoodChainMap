@@ -27,149 +27,83 @@
 
     <script>
         mapboxgl.accessToken =
-            'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+            'pk.eyJ1IjoiYWRhbW5pY2V3YXJuZXIiLCJhIjoiY2t3d285YmVvMDVsNTJwcjBsYWJwc2VjdiJ9.FfcngvRtdGpBEaP8JyzEdw';
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v10',
+            style: 'mapbox://styles/adamnicewarner/ckwwytoop7cei15o861rlprwd',
             center: [-120, 50],
             zoom: 2
         });
 
-        map.on('load', () => {
-            // Add a geojson point source.
-            // Heatmap layers also work with a vector tile source.
-            map.addSource('earthquakes', {
+        const json = "/Assets/FastFoodRestaurants.geojson"
+        /**
+         * Wait until the map loads to make changes to the map.
+         */
+         map.on('load', () => {
+            /**
+             * This is where your '.addLayer()' used to be, instead
+             * add only the source without styling a layer
+             */
+            map.addSource('places', {
                 'type': 'geojson',
-                'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+                'data': json
             });
 
-            map.addLayer({
-                    'id': 'earthquakes-heat',
-                    'type': 'heatmap',
-                    'source': 'earthquakes',
-                    'maxzoom': 9,
-                    'paint': {
-                        // Increase the heatmap weight based on frequency and property magnitude
-                        'heatmap-weight': [
-                            'interpolate',
-                            ['linear'],
-                            ['get', 'mag'],
-                            0,
-                            0,
-                            6,
-                            1
-                        ],
-                        // Increase the heatmap color weight weight by zoom level
-                        // heatmap-intensity is a multiplier on top of heatmap-weight
-                        'heatmap-intensity': [
-                            'interpolate',
-                            ['linear'],
-                            ['zoom'],
-                            0,
-                            1,
-                            9,
-                            3
-                        ],
-                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-                        // Begin color ramp at 0-stop with a 0-transparancy color
-                        // to create a blur-like effect.
-                        'heatmap-color': [
-                            'interpolate',
-                            ['linear'],
-                            ['heatmap-density'],
-                            0,
-                            'rgba(33,102,172,0)',
-                            0.2,
-                            'rgb(103,169,207)',
-                            0.4,
-                            'rgb(209,229,240)',
-                            0.6,
-                            'rgb(253,219,199)',
-                            0.8,
-                            'rgb(239,138,98)',
-                            1,
-                            'rgb(178,24,43)'
-                        ],
-                        // Adjust the heatmap radius by zoom level
-                        'heatmap-radius': [
-                            'interpolate',
-                            ['linear'],
-                            ['zoom'],
-                            0,
-                            2,
-                            9,
-                            20
-                        ],
-                        // Transition from heatmap to circle layer by zoom level
-                        'heatmap-opacity': [
-                            'interpolate',
-                            ['linear'],
-                            ['zoom'],
-                            7,
-                            1,
-                            9,
-                            0
-                        ]
-                    }
-                },
-                'waterway-label'
-            );
-
-            map.addLayer({
-                    'id': 'earthquakes-point',
-                    'type': 'circle',
-                    'source': 'earthquakes',
-                    'minzoom': 7,
-                    'paint': {
-                        // Size circle radius by earthquake magnitude and zoom level
-                        'circle-radius': [
-                            'interpolate',
-                            ['linear'],
-                            ['zoom'],
-                            7,
-                            ['interpolate', ['linear'],
-                                ['get', 'mag'], 1, 1, 6, 4
-                            ],
-                            16,
-                            ['interpolate', ['linear'],
-                                ['get', 'mag'], 1, 5, 6, 50
-                            ]
-                        ],
-                        // Color circle by earthquake magnitude
-                        'circle-color': [
-                            'interpolate',
-                            ['linear'],
-                            ['get', 'mag'],
-                            1,
-                            'rgba(33,102,172,0)',
-                            2,
-                            'rgb(103,169,207)',
-                            3,
-                            'rgb(209,229,240)',
-                            4,
-                            'rgb(253,219,199)',
-                            5,
-                            'rgb(239,138,98)',
-                            6,
-                            'rgb(178,24,43)'
-                        ],
-                        'circle-stroke-color': 'white',
-                        'circle-stroke-width': 1,
-                        // Transition from heatmap to circle layer by zoom level
-                        'circle-opacity': [
-                            'interpolate',
-                            ['linear'],
-                            ['zoom'],
-                            7,
-                            0,
-                            8,
-                            1
-                        ]
-                    }
-                },
-                'waterway-label'
-            );
+            /**
+             * Add all the things to the page:
+             * - The location listings on the side of the page
+             * - The markers onto the map
+             */
+            addMarkers();
         });
+
+        /**
+         * Add a marker to the map for every store listing.
+         **/
+        function addMarkers() {
+            /* For each feature in the GeoJSON object above: */
+            for (const marker of json.features) {
+                /* Create a div element for the marker. */
+                const el = document.createElement('div');
+                /* Assign a unique `id` to the marker. */
+                el.id = `marker-${marker.properties.id}`;
+                /* Assign the `marker` class to each marker for styling. */
+                el.className = 'marker';
+
+                /**
+                 * Create a marker using the div element
+                 * defined above and add it to the map.
+                 **/
+                new mapboxgl.Marker(el, {
+                        offset: [0, -23]
+                    })
+                    .setLngLat(marker.geometry.coordinates)
+                    .addTo(map);
+
+                /**
+                 * Listen to the element and when it is clicked, do three things:
+                 * 1. Fly to the point
+                 * 2. Close all other popups and display popup for clicked store
+                 * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+                 **/
+                el.addEventListener('click', (e) => {
+                    /* Fly to the point */
+                    flyToStore(marker);
+                    /* Close all other popups and display popup for clicked store */
+                    createPopUp(marker);
+                    /* Highlight listing in sidebar */
+                    const activeItem = document.getElementsByClassName('active');
+                    e.stopPropagation();
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    const listing = document.getElementById(
+                        `listing-${marker.properties.id}`
+                    );
+                    listing.classList.add('active');
+                });
+            }
+        }
     </script>
 
 </body>
