@@ -61,7 +61,7 @@
           min-height: 60px;
           line-height: 60px;
           padding: 0 10px;
-          background-color: #00853e;
+          background-color: purple;
           color: #fff;
       }
 
@@ -121,13 +121,51 @@
           color: black;
           border: none;
           cursor: pointer;
-          height: 50px;
-          width: 50px;
-          background-image: url(img/circle_yellow.png);
+          height: 5px;
+          width: 5px;
+          background-image: url(img/circle_white5.png);
           /* display: inline-block; */
           /* margin: 0 0.5rem; */
       }
+      .McDonalds {
+        background-image: url(img/circle_red5.png);
+      }
 
+      .Burger_King {
+        background-image: url(img/circle_blue5.png);
+      }
+
+      .Taco_Bell {
+        background-image: url(img/circle_purple5.png);
+      }
+
+      .Wendys {
+        background-image: url(img/circle_cyan5.png);
+      }
+
+      .Arbys {
+        background-image: url(img/circle_yellow5.png);
+      }
+
+      .KFC {
+        background-image: url(img/circle_orange5.png);
+      }
+
+      .Subway {
+        background-image: url(img/circle_green5.png);
+      }
+
+      .Dominos_Pizza {
+        background-image: url(img/circle_gray5.png);
+      }
+
+      .SONIC_Drive_In {
+        background-image: url(img/circle_pink5.png);
+      }
+
+      .Jack_in_the_Box {
+        background-image: url(img/circle_lightred5.png);
+      }
       /* Marker tweaks */
       .mapboxgl-popup {
           padding-bottom: 50px;
@@ -170,22 +208,111 @@
       .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
           border-bottom-color: #91c949;
       }
+      #controls label {
+          cursor: pointer;
+          background-size: contain;
+          height: 20px;
+          width: 20px;
+          filter:grayscale(100%);
+          display:inline-block;
+          padding: 0 0 0 0px;
+      }
+      #checkbox {
+          display: none;
+      }
+      #box_1:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_2:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_3:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_4:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_5:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_6:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_7:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_8:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_9:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_10:checked + label{
+          filter:grayscale(0%);
+      }
+      #box_11:checked + label{
+          filter:grayscale(0%);
+      }
+      
+      
   </style>
 </head>
 
 <body>
+  <div class="sidebar">
+    <div class="heading">
+        <h1>Fast Food Restaurants across America(random sampling)</h1>
+    </div>
+    <div id="controls">
+      <p>Which Restraunts would you like to see</p>
+      <input type="checkbox" class="checkbox" id="box_1" name="J1" checked=checked>
+      <label class="McDonalds" for="box_1"></label>McDonalds<br>
+      <input type="checkbox" class="checkbox" id="box_2" name="J2" checked=checked>
+      <label class="Burger_King" for="box_2"></label>Burger King<br>
+      <input type="checkbox" class="checkbox" id="box_3" name="J3" checked=checked>
+      <label class="Taco_Bell" for="box_3"></label>Taco Bell<br>
+      <input type="checkbox" class="Wendys" id="box_4" name="J4" checked=checked>
+      <label class="Wendys" for="box_4"></label>Wendys<br>
+      <input type="checkbox" class="Arbys" id="box_5" name="J5" checked=checked>
+      <label class="Arbys" for="box_5"></label>Arbys<br>
+      <input type="checkbox" class="KFC" id="box_6" name="J6" checked=checked>
+      <label class="KFC" for="box_6"></label>KFC<br>
+      <input type="checkbox" class="Subway" id="box_7" name="J7" checked=checked>
+      <label class="Subway" for="box_7"></label>Subway<br>
+      <input type="checkbox" class="Dominos" id="box_8" name="J5" checked=checked>
+      <label class="Dominos_Pizza" for="box_8"></label>Dominos<br>
+      <input type="checkbox" class="SONIC_Drive_In" id="box_9" name="J6" checked=checked>
+      <label class="SONIC_Drive_In" for="box_9"></label>SONIC<br>
+      <input type="checkbox" class="Jack_in_the_Box" id="box_10" name="J7" checked=checked>
+      <label class="Jack_in_the_Box" for="box_10"></label>Jack in the Box<br>
+      <input type="checkbox" class="Other" id="box_11" name="J11" checked=checked>
+      <label class="marker" for="box_11"></label>Other<br>
+    </div>
+    <button id="enter">reload</button>
+
+  </div>
   <div id="map" class="map"></div>
 
     <script>
+      restArray = ["McDonalds", "Burger_King", "Taco_Bell", "Wendys", "Arbys", "KFC", "Subway", "Dominos_Pizza", "SONIC_Drive_In", "Jack_in_the_Box"];
         mapboxgl.accessToken =
             'pk.eyJ1IjoiYWRhbW5pY2V3YXJuZXIiLCJhIjoiY2t3d285YmVvMDVsNTJwcjBsYWJwc2VjdiJ9.FfcngvRtdGpBEaP8JyzEdw';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/adamnicewarner/ckwwytoop7cei15o861rlprwd',
-            center: [-120, 50],
-            zoom: 2
+            center: [-100, 40],
+            zoom: 3
         });
 
+
+        /**
+         * This function is the default id function
+         * @param {string} id - an id string used by html
+         * @return {element} element gotten by getElementById
+         */
+        function id(id) {
+          return document.getElementById(id);
+        }
         async function geojsonFetch() {
 
           let response, json;
@@ -219,9 +346,18 @@
                * - The location listings on the side of the page
                * - The markers onto the map
                */
+              let enterButton = document.getElementById("enter");
+              enterButton.addEventListener("click", clickEnter);
               addMarkers();
           });
-
+          function clickEnter(){
+            var class_name='marker';
+            elements=document.getElementsByClassName(class_name);
+            while(elements.length > 0){
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+          addMarkers();
+        }
 
 
 
@@ -229,25 +365,42 @@
            * Add a marker to the map for every store listing.
            **/
           function addMarkers() {
+            packArray = [id("box_1").checked,id("box_2").checked,id("box_3").checked,id("box_4").checked,id("box_5").checked,id("box_6").checked,id("box_7").checked,id("box_8").checked,id("box_9").checked,id("box_10").checked,id("box_11").checked]
               /* For each feature in the GeoJSON object above: */
               for (const marker of json.features) {
-                  /* Create a div element for the marker. */
-                  const el = document.createElement('div');
-                  /* Assign a unique `id` to the marker. */
-                  el.id = `marker-${marker.properties.id}`;
-                  /* Assign the `marker` class to each marker for styling. */
-                  el.className = 'marker' + " " + marker.properties.name;
+                curr = "other";
+                num = 0;
+                found = false;
+                for(const rest of restArray){
+                    if(!found){
+                      num++;
+                      if(marker.properties.name == rest){
+                        curr = rest;
+                        num--;
+                        found = true;
+                      }
+                  }
+                }
+                console.log(num);
+                if(packArray[num]){
+                    /* Create a div element for the marker. */
+                    const el = document.createElement('div');
+                    /* Assign a unique `id` to the marker. */
+                    el.id = `marker-${marker.properties.id}`;
+                    /* Assign the `marker` class to each marker for styling. */
+                    el.className = 'marker' + " " + marker.properties.name;
 
-                  /**
-                   * Create a marker using the div element
-                   * defined above and add it to the map.
-                   **/
-                  console.log(marker.geometry.coordinates);
-                  new mapboxgl.Marker(el, {
-                          offset: [0, -23]
-                      })
-                      .setLngLat(marker.geometry.coordinates)
-                      .addTo(map);
+                    /**
+                     * Create a marker using the div element
+                     * defined above and add it to the map.
+                     **/
+                    console.log(marker.geometry.coordinates);
+                    new mapboxgl.Marker(el, {
+                            offset: [0, 0]
+                        })
+                        .setLngLat(marker.geometry.coordinates)
+                        .addTo(map);
+                }
               }
           }
           }
