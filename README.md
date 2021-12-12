@@ -4,7 +4,7 @@ You need to create a readme.md file and save it in the root of the final project
 
 Fast Food Chain Map: A map of 10,000 randomly selected restaraunts across the USA
 
-The goal of my project was always to show the spread of different chain restaraunts, from more regional ones like SONIC drive in to the widespread golden arches of McDonalds. 
+The goal of my project was always to show the spread of different chain restaraunts, from more regional ones like SONIC drive in to the widespread golden arches of McDonalds. The restaraunts in the sample with 200+ locations were chosen to be on the legend, while the smaller ones were simply designated as "Other". In the future, I'd like to add a popup onto the dots, so that you can see the names of the places that were too small to list here.
 
 <img src="img/screenshotBasic.jpg">
 
